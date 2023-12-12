@@ -1,13 +1,19 @@
 import { Form, Input,message } from "antd";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
+
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const dispatch=useDispatch();
 
   const onfinishHandler = async (values) => {
     try {
+      dispatch(showLoading())
       const res = await axios.post("http://localhost:5000/api/v1/user/register", values);
+      dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");
         navigate("/login");
@@ -15,6 +21,7 @@ const RegisterPage = () => {
         message.error(res.data.message);
       }
     } catch (error) {
+      dispatch(hideLoading())
       console.log(error);
       message.error("Something Went Wrong");
     }
