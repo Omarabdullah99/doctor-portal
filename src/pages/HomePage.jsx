@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
+import Layout from "../components/Layout";
 
 const HomePage = () => {
   // login user data
@@ -23,7 +24,10 @@ const HomePage = () => {
     getUserData();
   }, []);
   return (
-    <div>HomePage</div>
+    <div>
+    <Layout> HomePage </Layout>
+    
+    </div>
   )
 }
 
