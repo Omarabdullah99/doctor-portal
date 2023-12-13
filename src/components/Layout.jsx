@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/LayoutStyles.css";
-import { sidebarMenu } from "../Data/data";
+import { userMenu,adminMenu } from "../Data/data";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { message } from "antd";
@@ -8,8 +8,11 @@ import { useSelector } from "react-redux";
 const Layout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const { user } = useSelector((state) => state.user);
   console.log("authuser",user)
+
+  const SidebarMenu = user?.isAdmin ? adminMenu : userMenu;
   // logout funtion
   const handleLogout = () => {
     localStorage.clear();
@@ -28,7 +31,7 @@ const Layout = ({ children }) => {
               <hr />
             </div>
             <div className="menu">
-              {sidebarMenu?.map((menu) => {
+              {SidebarMenu?.map((menu) => {
                 const isActive = location.pathname === menu.path;
                 return (
                   <>
