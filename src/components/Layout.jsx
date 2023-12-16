@@ -5,6 +5,7 @@ import { userMenu,adminMenu } from "../Data/data";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {Badge, message } from "antd";
 import { useSelector } from "react-redux";
+
 const Layout = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -12,7 +13,33 @@ const Layout = ({ children }) => {
   const { user } = useSelector((state) => state.user);
   console.log("authuser",user)
 
-  const SidebarMenu = user?.isAdmin ? adminMenu : userMenu;
+  {/*doctor menu */}
+  const doctorMenu = [
+    {
+      name: "Home",
+      path: "/",
+      icon: "fa-solid fa-house",
+    },
+    {
+      name: "Appointments",
+      path: "/appointments",
+      icon: "fa-solid fa-list",
+    },
+
+    {
+      name: "Profile",
+      path: `/doctor/profile/${user?._id}`,
+      icon: "fa-solid fa-user",
+    },
+  ];
+  {/*doctor menu */}
+
+  const SidebarMenu = user?.isAdmin
+  ? adminMenu
+  : user?.isDoctor
+  ? doctorMenu
+  : userMenu;
+  
   // logout funtion
   const handleLogout = () => {
     localStorage.clear();
