@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from '../redux/features/alertSlice';
 import axios from "axios";
+import moment from "moment";
 
 const ApplyDoctor = () => {
     const { user } = useSelector((state) => state.user);
@@ -14,30 +15,40 @@ const ApplyDoctor = () => {
     const navigate = useNavigate();
 
     const handleFinish = async (values) => {
-        try {
-          dispatch(showLoading());
-          const res = await axios.post(
-            "http://localhost:5000/api/v1/user/apply-doctor",
-            { ...values, userId: user?._id },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-          dispatch(hideLoading());
-          if (res.data.success) {
-            message.success(res.data.success);
-            navigate("/");
-          } else {
-            message.error(res.data.success);
+      try {
+        dispatch(showLoading());
+    
+        // Extract values from moment objects
+        const [start, end] = values.timings.map((time) => time.format("HH:mm"));
+    
+        const res = await axios.post(
+          "http://localhost:5000/api/v1/user/apply-doctor",
+          {
+            ...values,
+            userId: user._id,
+            timings: [start, end],
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-        } catch (error) {
-          dispatch(hideLoading());
-          console.log(error);
-          message.error("Somthing Went Wrrong ");
+        );
+    
+        dispatch(hideLoading());
+    
+        if (res.data.success) {
+          message.success(res.data.message);
+          navigate("/");
+        } else {
+          message.error(res.data.message);
         }
-      };
+      } catch (error) {
+        dispatch(hideLoading());
+        console.log(error);
+        message.error("Something went wrong");
+      }
+    };
   return (
     <Layout>
     <h1 className="text-center">Apply Doctor</h1>
