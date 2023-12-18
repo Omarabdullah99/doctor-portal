@@ -12,7 +12,6 @@ const Layout = ({ children }) => {
 
   const { user } = useSelector((state) => state.user);
   console.log("authuser",user)
-
   {/*doctor menu */}
   const doctorMenu = [
     {
@@ -25,7 +24,6 @@ const Layout = ({ children }) => {
       path: "/appointments",
       icon: "fa-solid fa-list",
     },
-
     {
       name: "Profile",
       path: `/doctor/profile/${user?._id}`,

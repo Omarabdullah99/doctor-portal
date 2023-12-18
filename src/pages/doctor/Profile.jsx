@@ -13,7 +13,6 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const params = useParams();
-
    //getDOc Details
    const getDoctorInfo = async () => {
     try {
@@ -45,15 +44,14 @@ const Profile = () => {
     console.log('updateProfile',values)
     try {
       dispatch(showLoading());
+              // Extract values from moment objects
+              const [start, end] = values.timings.map((time) => time.format("HH:mm"));
       const res = await axios.post(
         "http://localhost:5000/api/v1/doctor/updateProfile",
         {
           ...values,
           userId: user._id,
-          timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
-          ],
+          timings: [start, end],
         },
         {
           headers: {

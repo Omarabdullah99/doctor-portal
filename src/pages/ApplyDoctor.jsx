@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from '../redux/features/alertSlice';
 import axios from "axios";
-import moment from "moment";
+
 
 const ApplyDoctor = () => {
     const { user } = useSelector((state) => state.user);
